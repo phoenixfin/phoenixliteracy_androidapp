@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">PhoenixLiteracy</string>
+    <string name="title">Judul</string>
+    <string name="detail">Detail</string>
+    <string name="grid">Tampilan Kisi</string>
+    <string name="list">Tampilan Daftar</string>
+</resources>
