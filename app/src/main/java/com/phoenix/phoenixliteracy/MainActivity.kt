@@ -1,9 +1,12 @@
 package com.phoenix.phoenixliteracy
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
+import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.ActionBar
 import androidx.recyclerview.widget.GridLayoutManager
@@ -11,46 +14,54 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var rvHeroes: RecyclerView
+    private lateinit var rvBooklet: RecyclerView
     private var list: ArrayList<Booklet> = arrayListOf()
-    private var title: String = "Mode List"
+    private var title: String = "Booklet Phx"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setActionBarTitle(title)
-        rvHeroes = findViewById(R.id.rv_heroes)
-        rvHeroes.setHasFixedSize(true)
-
+        rvBooklet = findViewById(R.id.rv_booklet)
+        rvBooklet.setHasFixedSize(true)
         list.addAll(BookletData.listData)
+
         showRecyclerList()
     }
 
     private fun showRecyclerList() {
-        rvHeroes.layoutManager = LinearLayoutManager(this)
-        val listHeroAdapter = ListAdapter(list)
-        rvHeroes.adapter = listHeroAdapter
-        listHeroAdapter.setOnItemClickCallback(object : ListAdapter.OnItemClickCallback {
+        rvBooklet.layoutManager = LinearLayoutManager(this)
+        val listAdapter = ListAdapter(list)
+        rvBooklet.adapter = listAdapter
+        listAdapter.setOnItemClickCallback(object : ListAdapter.OnItemClickCallback {
             override fun onItemClicked(data: Booklet) {
-                showSelectedHero(data)
+                showSelectedBooklet(data)
             }
         })
     }
 
     private fun showRecyclerGrid() {
-        rvHeroes.layoutManager = GridLayoutManager(this, 2)
-        val gridHeroAdapter = GridAdapter(list)
-        rvHeroes.adapter = gridHeroAdapter
+        rvBooklet.layoutManager = GridLayoutManager(this, 2)
+        val gridAdapter = GridAdapter(list)
+        rvBooklet.adapter = gridAdapter
 
-        gridHeroAdapter.setOnItemClickCallback(object : GridAdapter.OnItemClickCallback {
+        gridAdapter.setOnItemClickCallback(object : GridAdapter.OnItemClickCallback {
             override fun onItemClicked(data: Booklet) {
-                showSelectedHero(data)
+                showSelectedBooklet(data)
             }
         })
     }
 
-    private fun showSelectedHero(hero: Booklet) {
-        Toast.makeText(this, "Kamu memilih " + hero.title, Toast.LENGTH_SHORT).show()
+    private fun showSelectedBooklet(booklet: Booklet) {
+        val detailedIntent = Intent(this@MainActivity, DetailedActivity::class.java)
+
+        detailedIntent.putExtra(DetailedActivity.TITLE, booklet.title)
+        detailedIntent.putExtra(DetailedActivity.DESC, booklet.description)
+        detailedIntent.putExtra(DetailedActivity.PAGE, booklet.page)
+        detailedIntent.putExtra(DetailedActivity.DATE, booklet.date)
+        detailedIntent.putExtra(DetailedActivity.IMG, booklet.photo)
+        detailedIntent.putExtra(DetailedActivity.URL, booklet.url)
+        startActivity(detailedIntent)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -72,14 +83,15 @@ class MainActivity : AppCompatActivity() {
     private fun setMode(selectedMode: Int) {
         when (selectedMode) {
             R.id.action_list -> {
-                title = "Mode Daftar"
                 showRecyclerList()
             }
             R.id.action_grid -> {
-                title = "Mode Grid"
                 showRecyclerGrid()
             }
+            R.id.action_about -> {
+                val aboutIntent = Intent(this@MainActivity, AboutActivity::class.java)
+                startActivity(aboutIntent)
+            }
         }
-        setActionBarTitle(title)
     }
 }

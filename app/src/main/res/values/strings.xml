@@ -4,4 +4,10 @@
     <string name="detail">Detail</string>
     <string name="grid">Tampilan Kisi</string>
     <string name="list">Tampilan Daftar</string>
+    <string name="author_name">Aditya Firman Ihsan</string>
+    <string name="author_email">aditya.fphoenix@gmail.com</string>
+    <string name="about">About</string>
+    <string name="unduh">Unduh!</string>
+    <string name="tebal">Tebal</string>
+    <string name="terbit">Terbit</string>
 </resources>
